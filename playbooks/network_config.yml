@@ -20,3 +20,21 @@
           =======================================================
           WARNING: Authorized Access Only! All activity logged.
           =======================================================
+
+    - name: Configure interface descriptions
+      shell: |
+        ip link set eth0 alias "WAN - Uplink to Core Network" || true
+        ip link set lo alias "Loopback - Management Interface" || true
+
+    - name: Inject static route into routing table
+      shell: ip route add 10.0.0.0/8 via 172.20.0.1 || true
+
+    - name: Retrieve device information
+      setup:
+      register: device_facts
+
+    - name: Save device information to JSON file
+      copy:
+        content: "{{ device_facts.ansible_facts | to_nice_json }}"
+        dest: "/root/device_info.json"
+      delegate_to: localhost
