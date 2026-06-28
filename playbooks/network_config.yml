@@ -1,1 +1,22 @@
+---
+- name: Network Device Core Configuration
+  hosts: routers
+  gather_facts: no
+  tasks:
+    - name: Configure Loopback IP Address interface
+      shell: "ip addr add 192.168.100.1/32 dev lo || true"
 
+    - name: Create local user account
+      user:
+        name: netops
+        password: "{{ 'SecurePass789' | password_hash('sha512') }}"
+        shell: /bin/bash
+        state: present
+
+    - name: Deploy Issue Banner Message
+      copy:
+        dest: /etc/issue
+        content: |
+          =======================================================
+          WARNING: Authorized Access Only! All activity logged.
+          =======================================================
