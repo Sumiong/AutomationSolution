@@ -20,16 +20,17 @@
           =======================================================
           WARNING: Authorized Access Only! All activity logged.
           =======================================================
-
-    
-    # Part 2: Network routing, descriptions, and device state retrieval - Mathan
+     
+    # Part 2: Network routing, descriptions, and device state retrieval - Mathan Rao
     - name: Configure interface descriptions
       shell: |
         ip link set eth0 alias "WAN - Uplink to Core Network" || true
         ip link set lo alias "Loopback - Management Interface" || true
+      ignore_errors: yes
 
     - name: Inject static route into routing table
       shell: ip route add 10.0.0.0/8 via 172.17.0.1 || true
+      ignore_errors: yes
 
     - name: Retrieve device information
       setup:
