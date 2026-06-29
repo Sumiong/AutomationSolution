@@ -21,6 +21,8 @@
           WARNING: Authorized Access Only! All activity logged.
           =======================================================
 
+    
+    # Part 2: Network routing, descriptions, and device state retrieval - Mathan
     - name: Configure interface descriptions
       shell: |
         ip link set eth0 alias "WAN - Uplink to Core Network" || true
