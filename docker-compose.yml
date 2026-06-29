@@ -1,1 +1,26 @@
+version: '3.8'
 
+services:
+  ansible_node:
+    image: ubuntu:22.04
+    container_name: ansible_control
+    volumes:
+      - .:/project
+    tty: true
+    stdin_open: true
+    command: >
+      bash -c "apt-get update && apt-get install -y ansible openssh-client iputils-ping && tail -f /dev/null"
+
+  network_router:
+    image: ubuntu:22.04
+    container_name: sim_router
+    tty: true
+    command: >
+      bash -c "apt-get update && apt-get install -y openssh-server sudo iproute2 && mkdir /var/run/sshd && echo 'root:admin123' | chpasswd && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && /usr/sbin/sshd -D"
+
+  linux_server:
+    image: ubuntu:22.04
+    container_name: target_linux
+    tty: true
+    command: >
+      bash -c "apt-get update && apt-get install -y openssh-server sudo iproute2 && mkdir /var/run/sshd && echo 'root:admin123' | chpasswd && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && /usr/sbin/sshd -D"
