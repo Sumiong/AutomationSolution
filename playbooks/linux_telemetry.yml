@@ -1,1 +1,51 @@
+---
+- name: Linux Telemetry Automation
+  hosts: linux_servers
+  gather_facts: yes
 
+  tasks:
+
+    - name: Get hostname
+      command: hostname
+      register: hostname_info
+
+    - name: Get current date and time
+      command: date
+      register: datetime_info
+
+    - name: Get CPU information
+      command: lscpu
+      register: cpu_info
+
+    - name: Get memory usage
+      command: free -h
+      register: memory_info
+
+    - name: Get disk usage
+      command: df -h
+      register: disk_info
+
+    - name: Get logged-in users
+      command: who
+      register: logged_users
+
+    - name: Get top 5 CPU processes
+      shell: ps aux --sort=-%cpu | head -6
+      register: top_processes
+
+    - name: Save telemetry as custom host facts
+      set_fact:
+        telemetry:
+          hostname: "{{ hostname_info.stdout }}"
+          datetime: "{{ datetime_info.stdout }}"
+          cpu: "{{ cpu_info.stdout }}"
+          memory: "{{ memory_info.stdout }}"
+          disk: "{{ disk_info.stdout }}"
+          users: "{{ logged_users.stdout }}"
+          processes: "{{ top_processes.stdout }}"
+
+    - name: Save telemetry to JSON
+      copy:
+        content: "{{ telemetry | to_nice_json }}"
+        dest: "/project/linux_telemetry.json"
+      delegate_to: localhost
