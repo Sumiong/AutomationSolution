@@ -1,1 +1,21 @@
+---
+- name: Run Network Configuration
+  import_playbook: playbooks/network_config.yml
 
+- name: Run Linux Telemetry
+  import_playbook: playbooks/linux_telemetry.yml
+
+- name: Generate Final Report
+  hosts: linux_servers
+  gather_facts: no
+
+  tasks:
+    - name: Generate Markdown Report
+      template:
+        src: templates/telemetry_report.md.j2
+        dest: /project/final_report.md
+      delegate_to: localhost
+
+    - name: Show completion message
+      debug:
+        msg: "Report generated at /project/final_report.md"
