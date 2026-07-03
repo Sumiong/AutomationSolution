@@ -40,7 +40,8 @@ AutomationSolution/
 ├── templates/
 │   └── telemetry_report.md.j2
 │
-├── .gitignore 
+├── .gitignore
+├── README.md
 ├── device_info.json 
 ├── docker-compose.yml 
 ├── final_report.md
