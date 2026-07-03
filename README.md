@@ -61,14 +61,14 @@ AutomationSolution/
 ### Step 1: Clone Repository
 Clone our project repository
 ```text
-git clone <repository-url>
+git clone https://github.com/Sumiong/AutomationSolution
 cd AutomationSolution
 ```
 
 ### Step 2: Start the Docker Environment
 Build and start all containers, and verify the running containers
 ```text
-docker compose up -d
+docker-compose up -d
 docker ps
 ```
 
