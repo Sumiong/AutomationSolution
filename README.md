@@ -26,7 +26,7 @@ This automation project can perform the following tasks:
 - JSON output files generation
 - Produce a final Markdown report using Jinja2 templates
 
-### ------------------------------------------------------------------------------------------------------------------
+### ------------------------------------------------------------------------------------------------------
 
 ## Project Structure
 
