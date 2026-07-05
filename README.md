@@ -79,32 +79,41 @@ docker ps
 | sim_router | Simulated Router |
 | target_linux | Linux Telemetry Target |
 
-### Step 3: Access the Ansible Control Node
+### Step 3: Wait for Container Initialization
+After starting the containers, wait approximately 30–40 seconds before proceeding.  
+This is required because the ansible_control container is automatically installing required packages (e.g., Ansible) during startup.
+
+Skipping this step may result in errors such as:
+- ansible: command not found
+- apt lock issues
+
+### Step 4: Access the Ansible Control Node
+After the 30-40 seconds wait,
 Enter the Ansible container and verify the Ansible installation
 ```text
 docker exec -it ansible_control bash
 ansible --version
 ```
 
-### Step 4: Verify Connection
+### Step 5: Verify Connection
 Test the connectivity to all managed hosts, the results will be SUCCESS
 ```text
 ansible all -i inventory.ini -m ping
 ```
 
-### Step 5: Execute the Network Automation
+### Step 6: Execute the Network Automation
 Run the network configuration tasks. The **device_info.json** file will be created 
 ```text
 ansible-playbook -i inventory.ini playbooks/network_config.yml
 ```
 
-### Step 6: Execute the Linux Telemetry Collection
+### Step 7: Execute the Linux Telemetry Collection
 Run the telemetry collection. The **linux_telemetry.json** file will be created 
 ```text
 ansible-playbook -i inventory.ini playbooks/linux_telemetry.yml
 ```
 
-### Step 7: Run the Complete Automation Workflow
+### Step 8: Run the Complete Automation Workflow
 Execute the master playbook. The **final_report.md** file will be created 
 ```text
 ansible-playbook -i inventory.ini site.yml
